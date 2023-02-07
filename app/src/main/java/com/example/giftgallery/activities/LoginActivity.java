@@ -81,35 +81,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-//    private void signIn() {
-//        loading(true);
-//        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
-//        String login = binding.inputLogin.getText().toString();
-//        String password = binding.inputPassword.getText().toString();
-//        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                User user = snapshot.child(login).getValue(User.class);
-//                if (snapshot.child(login).exists() && password.equals(user.password)) {
-//                    Log.d("firebase", user.password + " : " + password);
-//                    preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
-//                    preferenceManager.putString(Constants.KEY_NAME, login);
-//                    Intent intent = new Intent(getApplicationContext(), CatalogActivity.class);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    startActivity(intent);
-//                    Log.d("firebase", "test2");
-//                } else {
-//                    loading(false);
-//                    showToast("Unable to sign in");
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                loading(false);
-//            }
-//        });
-//    }
-
     public void loading(boolean isLoading) {
         if (isLoading) {
             binding.buttonLogin.setVisibility(View.INVISIBLE);

@@ -16,6 +16,7 @@ import com.example.giftgallery.databinding.ActivityCatalogBinding;
 import com.example.giftgallery.listeners.LikeListener;
 import com.example.giftgallery.models.Gift;
 import com.example.giftgallery.models.Like;
+import com.example.giftgallery.models.User;
 import com.example.giftgallery.utilities.Constants;
 import com.example.giftgallery.utilities.PreferenceManager;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -58,7 +59,7 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
         loadUserDetails();
         setListeners();
         listenGifts();
-        getLikes();
+        listenLikes();
     }
 
     private void init() {
@@ -77,40 +78,48 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
         binding.textName.setText(preferenceManager.getString(Constants.KEY_NAME));
     }
 
-    private void getLikes() {
-        database.collection(Constants.KEY_COLLECTION_LIKES).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Like newLike = new Like();
-                        newLike.userId = document.getDocumentReference(Constants.KEY_USER_ID).getId();
-                        newLike.giftId = document.getDocumentReference(Constants.KEY_GIFT_ID).getId();
-                        likes.add(newLike);
-                    }
-                    for (int i = 0; i < gifts.size(); i++) {
-                        for (int j = 0; j < likes.size(); j++) {
-                            if (gifts.get(i).id.equals(likes.get(j).giftId)
-                            && likes.get(j).userId.equals(preferenceManager.getString(Constants.KEY_USER_ID))) {
-                                gifts.get(i).isLiked = true;
-                            }
-                        }
-                    }
-                    giftAdapter.notifyDataSetChanged();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                showToast("Error!");
-            }
-        });
+    private void listenLikes() {
+        database.collection(Constants.KEY_COLLECTION_LIKES)
+                .whereEqualTo(Constants.KEY_USER_ID, database.document("/users/" + preferenceManager.getString(Constants.KEY_USER_ID)))
+                .addSnapshotListener(eventLikesListener);
     }
 
     private void listenGifts() {
         database.collection(Constants.KEY_COLLECTION_GIFTS)
                 .addSnapshotListener(eventListener);
     }
+
+    private final EventListener<QuerySnapshot> eventLikesListener = (value, error) -> {
+        if (error != null) {
+            return;
+        }
+        if (value != null) {
+            for (DocumentChange documentChange : value.getDocumentChanges()) {
+                if (documentChange.getType() == DocumentChange.Type.ADDED) {
+                    String likeId = documentChange.getDocument().getId();
+                    Like like = new Like();
+                    like.id = likeId;
+                    like.userId = documentChange.getDocument().getDocumentReference(Constants.KEY_USER_ID).getId();
+                    like.giftId = documentChange.getDocument().getDocumentReference(Constants.KEY_GIFT_ID).getId();
+                    likes.add(like);
+                } else if (documentChange.getType() == DocumentChange.Type.REMOVED) {
+                    for (int i = 0; i < likes.size(); i++) {
+                        String likeId = documentChange.getDocument().getId();
+                        if (likes.get(i).id.equals(likeId)) {
+                            likes.remove(i);
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < likes.size(); i++) {
+                for (int j = 0; j < gifts.size(); j++) {
+                    if(likes.get(i).giftId.equals(gifts.get(j).id)) {
+                        gifts.get(j).isLiked = true;
+                    }
+                }
+            }
+        }
+    };
 
     private final EventListener<QuerySnapshot> eventListener = (value, error) -> {
         if (error != null) {
@@ -160,34 +169,90 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
     @Override
     public void onLikeClicked(View view, Gift gift) {
 
-        HashMap<String, Object> currentGift = new HashMap<>();
-        currentGift.put(Constants.KEY_COUNT_LIKES, gift.countLikes + 1);
-        Log.d("firebase", gift.id);
-        Log.d("firebase", String.valueOf(gift.countLikes));
+        String currentLikeId = null;
 
-        database.collection(Constants.KEY_COLLECTION_GIFTS)
-                .document(gift.id)
-                .update(currentGift)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        showToast("Liked!");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        showToast("Error!");
-                    }
-                });
-    }
-
-    public void onLikeClicked(View view, Boolean isLiked) {
-        AppCompatImageView likeImage = (AppCompatImageView) view;
-        if (isLiked) {
-            likeImage.setColorFilter(Color.RED);
-        } else {
-            likeImage.setColorFilter(Color.DKGRAY);
+        for (int i = 0; i < likes.size(); i++) {
+            if (gift.id.equals(likes.get(i).giftId)) {
+                currentLikeId = likes.get(i).id;
+                Log.e("aboba", "exists true");
+                gift.isLiked = true;
+            }
         }
 
+        if (currentLikeId == null) {
+            addLike(gift);
+        } else {
+            removeLike(gift, currentLikeId);
+        }
+    }
+
+    public void addLike(Gift gift) {
+        HashMap<String, Object> currentGift = new HashMap<>();
+        HashMap<String, Object> currentLike = new HashMap<>();
+
+        currentGift.put(Constants.KEY_COUNT_LIKES, gift.countLikes + 1);
+
+        currentLike.put(Constants.KEY_USER_ID, database.document("/users/" + preferenceManager.getString(Constants.KEY_USER_ID)));
+        currentLike.put(Constants.KEY_GIFT_ID, database.document("/gifts/" + gift.id));
+
+        database.collection(Constants.KEY_COLLECTION_LIKES).add(currentLike).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                database.collection(Constants.KEY_COLLECTION_GIFTS)
+                        .document(gift.id)
+                        .update(currentGift)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                showToast("Liked!");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                showToast("Error!");
+                            }
+                        });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showToast("Error!");
+            }
+        });
+    }
+
+    public void removeLike(Gift gift, String likeId) {
+        if (likeId == null) {
+            return;
+        }
+        gift.isLiked = false;
+        HashMap<String, Object> currentGift = new HashMap<>();
+
+        currentGift.put(Constants.KEY_COUNT_LIKES, gift.countLikes - 1);
+
+        database.collection(Constants.KEY_COLLECTION_LIKES).document(likeId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                database.collection(Constants.KEY_COLLECTION_GIFTS)
+                        .document(gift.id)
+                        .update(currentGift)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                showToast("Like deleted!");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                showToast("Error!");
+                            }
+                        });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showToast("Error!");
+            }
+        });
     }
 }

@@ -61,6 +61,9 @@ public class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.GiftViewHolder
             if(gift.isLiked) {
                 binding.imageLike.setColorFilter(Color.RED);
             }
+            else {
+                binding.imageLike.setColorFilter(Color.BLACK);
+            }
             binding.imageLike.setOnClickListener(v -> likeListener.onLikeClicked(v, gift));
 
         }
