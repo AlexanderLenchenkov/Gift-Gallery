@@ -8,4 +8,5 @@ public class Gift implements Serializable {
     public String id, name, description;
     public int countLikes;
     public ArrayList<String> tags;
+    public Boolean isLiked = false;
 }

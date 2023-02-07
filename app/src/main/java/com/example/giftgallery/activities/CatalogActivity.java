@@ -15,14 +15,18 @@ import com.example.giftgallery.adapters.GiftAdapter;
 import com.example.giftgallery.databinding.ActivityCatalogBinding;
 import com.example.giftgallery.listeners.LikeListener;
 import com.example.giftgallery.models.Gift;
+import com.example.giftgallery.models.Like;
 import com.example.giftgallery.utilities.Constants;
 import com.example.giftgallery.utilities.PreferenceManager;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.protobuf.Value;
@@ -41,6 +45,7 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
     private PreferenceManager preferenceManager;
     private GiftAdapter giftAdapter;
     private ArrayList<Gift> gifts;
+    private ArrayList<Like> likes;
     private FirebaseFirestore database;
 
     @Override
@@ -53,10 +58,12 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
         loadUserDetails();
         setListeners();
         listenGifts();
+        getLikes();
     }
 
     private void init() {
         gifts = new ArrayList<>();
+        likes = new ArrayList<>();
         giftAdapter = new GiftAdapter(gifts, this);
         binding.productsRecyclerView.setAdapter(giftAdapter);
         database = FirebaseFirestore.getInstance();
@@ -68,6 +75,36 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
 
     private void loadUserDetails() {
         binding.textName.setText(preferenceManager.getString(Constants.KEY_NAME));
+    }
+
+    private void getLikes() {
+        database.collection(Constants.KEY_COLLECTION_LIKES).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Like newLike = new Like();
+                        newLike.userId = document.getDocumentReference(Constants.KEY_USER_ID).getId();
+                        newLike.giftId = document.getDocumentReference(Constants.KEY_GIFT_ID).getId();
+                        likes.add(newLike);
+                    }
+                    for (int i = 0; i < gifts.size(); i++) {
+                        for (int j = 0; j < likes.size(); j++) {
+                            if (gifts.get(i).id.equals(likes.get(j).giftId)
+                            && likes.get(j).userId.equals(preferenceManager.getString(Constants.KEY_USER_ID))) {
+                                gifts.get(i).isLiked = true;
+                            }
+                        }
+                    }
+                    giftAdapter.notifyDataSetChanged();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showToast("Error!");
+            }
+        });
     }
 
     private void listenGifts() {
@@ -142,9 +179,15 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
                         showToast("Error!");
                     }
                 });
+    }
 
+    public void onLikeClicked(View view, Boolean isLiked) {
+        AppCompatImageView likeImage = (AppCompatImageView) view;
+        if (isLiked) {
+            likeImage.setColorFilter(Color.RED);
+        } else {
+            likeImage.setColorFilter(Color.DKGRAY);
+        }
 
-        AppCompatImageView likeImege = (AppCompatImageView) view;
-        likeImege.setColorFilter(Color.RED);
     }
 }

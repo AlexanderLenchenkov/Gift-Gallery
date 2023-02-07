@@ -1,5 +1,6 @@
 package com.example.giftgallery.adapters;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -57,7 +58,11 @@ public class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.GiftViewHolder
             binding.textProductName.setText(gift.name);
             binding.textProductDescr.setText(gift.description);
             binding.textCountLikes.setText(String.valueOf(gift.countLikes));
+            if(gift.isLiked) {
+                binding.imageLike.setColorFilter(Color.RED);
+            }
             binding.imageLike.setOnClickListener(v -> likeListener.onLikeClicked(v, gift));
+
         }
     }
 
