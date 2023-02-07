@@ -1,5 +1,7 @@
 package com.example.giftgallery.adapters;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import com.example.giftgallery.listeners.LikeListener;
 import com.example.giftgallery.models.Gift;
 import com.example.giftgallery.databinding.CatalogItemBinding;
 
+import java.util.Base64;
 import java.util.List;
 
 public class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.GiftViewHolder> {
@@ -58,6 +61,7 @@ public class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.GiftViewHolder
             binding.textProductName.setText(gift.name);
             binding.textProductDescr.setText(gift.description);
             binding.textCountLikes.setText(String.valueOf(gift.countLikes));
+            binding.imageView.setImageBitmap(getImage(gift.image));
             if(gift.isLiked) {
                 binding.imageLike.setColorFilter(Color.RED);
             }
@@ -67,6 +71,13 @@ public class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.GiftViewHolder
             binding.imageLike.setOnClickListener(v -> likeListener.onLikeClicked(v, gift));
 
         }
+    }
+
+    private Bitmap getImage(String encodedImage) {
+        byte[] bytes = new byte[0];
+        bytes = Base64.getMimeDecoder().decode(encodedImage);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        return bitmap;
     }
 
 }
