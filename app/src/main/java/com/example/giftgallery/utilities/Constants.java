@@ -11,6 +11,7 @@ public class Constants {
 
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_COUNT_LIKES = "countLikes";
+    public static final String KEY_IMAGE = "image";
     public static final String KEY_TAGS = "tags";
     public static final String KEY_MALE = "male";
     public static final String KEY_FEMALE = "female";

@@ -132,6 +132,7 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
                     Gift gift = new Gift();
                     gift.id = giftId;
                     gift.name = documentChange.getDocument().getString(Constants.KEY_NAME);
+                    gift.image = documentChange.getDocument().getString(Constants.KEY_IMAGE);
                     gift.description = documentChange.getDocument().getString(Constants.KEY_DESCRIPTION);
                     gift.countLikes = documentChange.getDocument().get(Constants.KEY_COUNT_LIKES, Integer.class);
 
@@ -141,6 +142,7 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
                         String giftId = documentChange.getDocument().getId();
                         if (gifts.get(i).id.equals(giftId)) {
                             gifts.get(i).name = documentChange.getDocument().getString(Constants.KEY_NAME);
+                            gifts.get(i).image = documentChange.getDocument().getString(Constants.KEY_IMAGE);
                             gifts.get(i).description = documentChange.getDocument().getString(Constants.KEY_DESCRIPTION);
                             gifts.get(i).countLikes = documentChange.getDocument().get(Constants.KEY_COUNT_LIKES, Integer.class);
                         }
