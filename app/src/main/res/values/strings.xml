@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GiftGallery</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="welcome_back">Welcome back!</string>
+    <string name="login_to_continue">Login to continue</string>
+    <string name="lorem_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a felis nec augue dictum facilisis. Nulla et ex tincidunt, lobortis leo vel, egestas urna.</string>
+</resources>
