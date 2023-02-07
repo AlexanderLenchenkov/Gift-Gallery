@@ -174,7 +174,6 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
         for (int i = 0; i < likes.size(); i++) {
             if (gift.id.equals(likes.get(i).giftId)) {
                 currentLikeId = likes.get(i).id;
-                Log.e("aboba", "exists true");
                 gift.isLiked = true;
             }
         }
