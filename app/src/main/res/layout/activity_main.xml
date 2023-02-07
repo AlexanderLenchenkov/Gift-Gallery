@@ -6,11 +6,213 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
+    <TextView
+        android:background="@color/primary"
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        android:gravity="center"
+        android:text="Filters"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/filterScrollViewer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/filterScrollViewer"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonOpenCatalog"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:layout_height="0dp">
+
+        <LinearLayout
+            android:id="@+id/filtersLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/buttonOpenCatalog"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Пол:"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/maleRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Мужской" />
+
+                <RadioButton
+                    android:id="@+id/femaleRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Женский" />
+            </RadioGroup>
+
+            <TextView
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:text="Поводы для подарка:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:id="@+id/newYearTag"
+                android:button="@drawable/custom_checkbox_selector"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="Новый год"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:id="@+id/christmasTag"
+                android:button="@drawable/custom_checkbox_selector"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="Рождество"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:id="@+id/februaryOf23CheckBox"
+                android:button="@drawable/custom_checkbox_selector"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="23 Февраля"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:id="@+id/easterTag"
+                android:button="@drawable/custom_checkbox_selector"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="Пасха"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:id="@+id/angelDayTag"
+                android:button="@drawable/custom_checkbox_selector"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="День ангела"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:id="@+id/weddingDay"
+                android:button="@drawable/custom_checkbox_selector"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="На свадьбу"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:id="@+id/bigPurchaseTag"
+                android:button="@drawable/custom_checkbox_selector"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="По поводу покупки крупной вещи"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <CheckBox
+                android:id="@+id/retirementTag"
+                android:button="@drawable/custom_checkbox_selector"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="При выходе на пенсию"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:id="@+id/birthdayTag"
+                android:button="@drawable/custom_checkbox_selector"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="День рождения"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:id="@+id/apologyTag"
+                android:button="@drawable/custom_checkbox_selector"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="В качестве извинения"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:id="@+id/respectTag"
+                android:button="@drawable/custom_checkbox_selector"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="В знак уважения"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:id="@+id/christeningTag"
+                android:button="@drawable/custom_checkbox_selector"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="На крещение"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:id="@+id/housewarmingTag"
+                android:button="@drawable/custom_checkbox_selector"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="На новоселье"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:id="@+id/promotionTag"
+                android:button="@drawable/custom_checkbox_selector"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="В честь повышения на работе"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
     <Button
         android:id="@+id/buttonOpenCatalog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="20dp"
         android:paddingStart="60dp"
         android:paddingEnd="60dp"
         android:text="Go to catalog"

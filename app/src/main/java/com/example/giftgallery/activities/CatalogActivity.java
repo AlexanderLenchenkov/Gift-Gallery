@@ -48,6 +48,7 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
     private ArrayList<Gift> gifts;
     private ArrayList<Like> likes;
     private FirebaseFirestore database;
+    private ArrayList<String> selectedTags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,8 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
         setListeners();
         listenGifts();
         listenLikes();
+        selectedTags = preferenceManager.getStringArrayList("selectedTags");
+        Log.d("shop", String.valueOf(selectedTags.size()));
     }
 
     private void init() {

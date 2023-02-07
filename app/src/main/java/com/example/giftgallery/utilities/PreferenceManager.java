@@ -3,6 +3,10 @@ package com.example.giftgallery.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 public class PreferenceManager {
 
     private final SharedPreferences sharedPreferences;
@@ -15,6 +19,20 @@ public class PreferenceManager {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(key, value);
         editor.apply();
+    }
+
+    public void putStringArrayList(String key, ArrayList<String> list){
+        Set<String> set = new HashSet<>();
+        set.addAll(list);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putStringSet("selectedTags",set);
+        editor.apply();
+
+    }
+
+    public ArrayList<String> getStringArrayList(String key){
+        ArrayList<String> selectedTags = new ArrayList<>(sharedPreferences.getStringSet(key,null)) ;
+        return selectedTags;
     }
 
     public Boolean getBoolean(String key) {
