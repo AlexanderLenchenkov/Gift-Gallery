@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
 
 import com.example.giftgallery.R;
 import com.example.giftgallery.databinding.ActivityMainBinding;
@@ -21,6 +23,8 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private RadioButton maleRadioButton;
+    private RadioButton femaleRadioButton;
     private CheckBox newYearCheckBox;
     private CheckBox christmasCheckBox;
     private CheckBox februaryOf23CheckBox;
@@ -36,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox christeningCheckBox;
     private CheckBox housewarmingCheckBox;
     private CheckBox promotionCheckBox;
+    private CheckBox kidCheckBox;
+    private CheckBox youthCheckBox;
+    private CheckBox matureCheckBox;
+    private CheckBox pensionerCheckBox;
     ArrayList<CheckBox> checkBoxes;
     ArrayList<String> selectedTags;
 
@@ -52,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     public void init(){
         checkBoxes = new ArrayList<>();
         selectedTags = new ArrayList<>();
+        maleRadioButton = binding.maleRadioButton;
+        femaleRadioButton = binding.femaleRadioButton;
         newYearCheckBox = binding.newYearTag;
         christmasCheckBox = binding.christmasTag;
         februaryOf23CheckBox = binding.februaryOf23CheckBox;
@@ -66,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
         christeningCheckBox = binding.christeningTag;
         housewarmingCheckBox = binding.housewarmingTag;
         promotionCheckBox = binding.promotionTag;
+        kidCheckBox = binding.kidTag;
+        youthCheckBox = binding.youthTag;
+        matureCheckBox = binding.matureTag;
+        pensionerCheckBox = binding.pensionerTag;
         checkBoxes.add(newYearCheckBox);
         checkBoxes.add(christmasCheckBox);
         checkBoxes.add(februaryOf23CheckBox);
@@ -80,6 +94,30 @@ public class MainActivity extends AppCompatActivity {
         checkBoxes.add(christeningCheckBox);
         checkBoxes.add(housewarmingCheckBox);
         checkBoxes.add(promotionCheckBox);
+        checkBoxes.add(kidCheckBox);
+        checkBoxes.add(youthCheckBox);
+        checkBoxes.add(matureCheckBox);
+        checkBoxes.add(pensionerCheckBox);
+        maleRadioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    selectedTags.add((String) compoundButton.getText());
+                }else{
+                    selectedTags.remove((String) compoundButton.getText());
+                }
+            }
+        });
+        femaleRadioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    selectedTags.add((String) compoundButton.getText());
+                }else{
+                    selectedTags.remove((String) compoundButton.getText());
+                }
+            }
+        });
         for (CheckBox box: checkBoxes) {
             box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -92,18 +130,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
     }
 
     private void setListeners() {
         binding.buttonOpenCatalog.setOnClickListener(v -> {
             Log.d("shop", String.valueOf(selectedTags.size()));
             if(!selectedTags.isEmpty()){
-                for (String text:selectedTags) {
-                    Log.d("shop", text);
-                }
-//                Set<String> set = new HashSet<>();
-//                set.addAll(selectedTags);
-                preferenceManager.putStringArrayList("selected",selectedTags);
+                preferenceManager.putStringArrayList("selectedTags",selectedTags);
+            }else{
+                preferenceManager.putStringArrayList("selectedTags", selectedTags);
             }
             Intent intent = new Intent(getApplicationContext(), CatalogActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

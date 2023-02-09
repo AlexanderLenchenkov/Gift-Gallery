@@ -23,7 +23,11 @@ public class PreferenceManager {
 
     public void putStringArrayList(String key, ArrayList<String> list){
         Set<String> set = new HashSet<>();
-        set.addAll(list);
+        if(!list.isEmpty()){
+            set.addAll(list);
+        }else{
+            set.add("Empty");
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putStringSet("selectedTags",set);
         editor.apply();

@@ -18,7 +18,12 @@ import java.util.List;
 
 public class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.GiftViewHolder> {
 
-    private final List<Gift> gifts;
+    private List<Gift> gifts;
+
+    public void setGifts(List<Gift> gifts) {
+        this.gifts = gifts;
+    }
+
     private final LikeListener likeListener;
 
     public GiftAdapter(List<Gift> gifts, LikeListener likeListener) {

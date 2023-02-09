@@ -32,6 +32,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.protobuf.Value;
 
+import org.checkerframework.checker.units.qual.A;
 import org.w3c.dom.Document;
 
 import java.util.ArrayList;
@@ -59,10 +60,9 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
         init();
         loadUserDetails();
         setListeners();
+        selectedTags = preferenceManager.getStringArrayList("selectedTags");
         listenGifts();
         listenLikes();
-        selectedTags = preferenceManager.getStringArrayList("selectedTags");
-        Log.d("shop", String.valueOf(selectedTags.size()));
     }
 
     private void init() {
@@ -134,11 +134,11 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
                     String giftId = documentChange.getDocument().getId();
                     Gift gift = new Gift();
                     gift.id = giftId;
+                    gift.tags = (ArrayList<String>)documentChange.getDocument().get("tags");
                     gift.name = documentChange.getDocument().getString(Constants.KEY_NAME);
                     gift.image = documentChange.getDocument().getString(Constants.KEY_IMAGE);
                     gift.description = documentChange.getDocument().getString(Constants.KEY_DESCRIPTION);
                     gift.countLikes = documentChange.getDocument().get(Constants.KEY_COUNT_LIKES, Integer.class);
-
                     gifts.add(gift);
                 } else if (documentChange.getType() == DocumentChange.Type.MODIFIED) {
                     for (int i = 0; i < gifts.size(); i++) {
@@ -146,11 +146,54 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
                         if (gifts.get(i).id.equals(giftId)) {
                             gifts.get(i).name = documentChange.getDocument().getString(Constants.KEY_NAME);
                             gifts.get(i).image = documentChange.getDocument().getString(Constants.KEY_IMAGE);
+                            gifts.get(i).tags = (ArrayList<String>)documentChange.getDocument().get("tags");
                             gifts.get(i).description = documentChange.getDocument().getString(Constants.KEY_DESCRIPTION);
                             gifts.get(i).countLikes = documentChange.getDocument().get(Constants.KEY_COUNT_LIKES, Integer.class);
                         }
                     }
                 }
+            }
+            if(!selectedTags.contains("Empty")){
+                Log.d("shop-catalog",selectedTags.toString());
+                ArrayList<Gift> filteredGifts =  new ArrayList<>();
+                for(Gift gift :gifts){
+                    for(String tag:selectedTags){
+                            if(tag.equals("0 - 18")){
+                                if(gift.tags.contains("0 - 18")){
+                                    filteredGifts.add(gift);
+                                }
+                                break;
+                            }else if(tag.equals("19 - 35")){
+                                if(gift.tags.contains("19 - 35")){
+                                    filteredGifts.add(gift);
+                                }
+                                break;
+                            }else if(tag.equals("36 - 60")){
+                                if(gift.tags.contains("36 - 60")){
+                                    filteredGifts.add(gift);
+                                }
+                                break;
+                            }else if(tag.equals("60+")){
+                                if(gift.tags.contains("60+")){
+                                    filteredGifts.add(gift);
+                                }
+                                break;
+                            }else if(tag.equals("Мужской")){
+                                if(gift.tags.contains("Мужской")){
+                                    filteredGifts.add(gift);
+                                }
+                                break;
+                            }else if(tag.equals("Женский")){
+                                if(gift.tags.contains("Женский")){
+                                    filteredGifts.add(gift);
+                                }
+                                break;
+                            }else if(gift.tags.contains(tag)) {
+                                filteredGifts.add(gift);
+                            }
+                    }
+                }
+                giftAdapter.setGifts(filteredGifts);
             }
             Collections.sort(gifts, (obj1, obj2) -> Double.compare(obj2.countLikes, obj1.countLikes));
             giftAdapter.notifyDataSetChanged();

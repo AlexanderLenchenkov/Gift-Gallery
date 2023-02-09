@@ -59,15 +59,64 @@
                 <RadioButton
                     android:id="@+id/maleRadioButton"
                     android:layout_width="match_parent"
+                    android:buttonTint="@color/primary"
                     android:layout_height="wrap_content"
                     android:text="Мужской" />
 
                 <RadioButton
                     android:id="@+id/femaleRadioButton"
                     android:layout_width="wrap_content"
+                    android:buttonTint="@color/primary"
                     android:layout_height="wrap_content"
                     android:text="Женский" />
             </RadioGroup>
+
+            <TextView
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:text="Возрастная категория:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            
+            <CheckBox
+                android:id="@+id/kidTag"
+                android:text="0 - 18"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:buttonTint="@color/primary"
+                android:button="@drawable/custom_checkbox_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:id="@+id/youthTag"
+                android:text="19 - 35"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:buttonTint="@color/primary"
+                android:button="@drawable/custom_checkbox_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:id="@+id/matureTag"
+                android:text="36 - 60"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:buttonTint="@color/primary"
+                android:button="@drawable/custom_checkbox_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CheckBox
+                android:id="@+id/pensionerTag"
+                android:text="60+"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:buttonTint="@color/primary"
+                android:button="@drawable/custom_checkbox_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:textColor="@color/black"
@@ -81,6 +130,7 @@
                 android:button="@drawable/custom_checkbox_selector"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:buttonTint="@color/primary"
                 android:text="Новый год"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -90,6 +140,7 @@
                 android:button="@drawable/custom_checkbox_selector"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:buttonTint="@color/primary"
                 android:text="Рождество"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -100,6 +151,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="23 Февраля"
+                android:buttonTint="@color/primary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -109,6 +161,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="Пасха"
+                android:buttonTint="@color/primary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -118,6 +171,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="День ангела"
+                android:buttonTint="@color/primary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -127,6 +181,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="На свадьбу"
+                android:buttonTint="@color/primary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -135,6 +190,7 @@
                 android:button="@drawable/custom_checkbox_selector"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:buttonTint="@color/primary"
                 android:text="По поводу покупки крупной вещи"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -143,6 +199,7 @@
                 android:button="@drawable/custom_checkbox_selector"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:buttonTint="@color/primary"
                 android:text="При выходе на пенсию"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -153,6 +210,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="День рождения"
+                android:buttonTint="@color/primary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -161,6 +219,7 @@
                 android:button="@drawable/custom_checkbox_selector"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:buttonTint="@color/primary"
                 android:text="В качестве извинения"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -170,6 +229,7 @@
                 android:button="@drawable/custom_checkbox_selector"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:buttonTint="@color/primary"
                 android:text="В знак уважения"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -180,6 +240,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="На крещение"
+                android:buttonTint="@color/primary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -189,6 +250,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="На новоселье"
+                android:buttonTint="@color/primary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -197,6 +259,7 @@
                 android:button="@drawable/custom_checkbox_selector"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:buttonTint="@color/primary"
                 android:text="В честь повышения на работе"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
