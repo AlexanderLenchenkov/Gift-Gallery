@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.giftgallery.adapters.GiftAdapter;
@@ -156,44 +157,158 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
             if(!selectedTags.contains("Empty")){
                 Log.d("shop-catalog",selectedTags.toString());
                 ArrayList<Gift> filteredGifts =  new ArrayList<>();
-                for(Gift gift :gifts){
-                    for(String tag:selectedTags){
-                            if(tag.equals("0 - 18")){
-                                if(gift.tags.contains("0 - 18")){
-                                    filteredGifts.add(gift);
-                                }
-                                break;
-                            }else if(tag.equals("19 - 35")){
-                                if(gift.tags.contains("19 - 35")){
-                                    filteredGifts.add(gift);
-                                }
-                                break;
-                            }else if(tag.equals("36 - 60")){
-                                if(gift.tags.contains("36 - 60")){
-                                    filteredGifts.add(gift);
-                                }
-                                break;
-                            }else if(tag.equals("60+")){
-                                if(gift.tags.contains("60+")){
-                                    filteredGifts.add(gift);
-                                }
-                                break;
-                            }else if(tag.equals("Мужской")){
-                                if(gift.tags.contains("Мужской")){
-                                    filteredGifts.add(gift);
-                                }
-                                break;
-                            }else if(tag.equals("Женский")){
-                                if(gift.tags.contains("Женский")){
-                                    filteredGifts.add(gift);
-                                }
-                                break;
-                            }else if(gift.tags.contains(tag)) {
+                ArrayList<Gift> filteredListCopy = new ArrayList<>();
+                ArrayList<String> ageTags = new ArrayList<>();
+                ArrayList<String> sexTags = new ArrayList<>();
+                if(selectedTags.contains("0 - 18")){
+                    ageTags.add("0 - 18");
+                    selectedTags.remove("0 - 18");
+                }
+                if(selectedTags.contains("19 - 35")){
+                    ageTags.add("19 - 35");
+                    selectedTags.remove("19 - 35");
+                }
+                if(selectedTags.contains("36 - 60")){
+                    ageTags.add("36 - 60");
+                    selectedTags.remove("36 - 60");
+                }
+                if(selectedTags.contains("60+")){
+                    ageTags.add("60+");
+                    selectedTags.remove("60+");
+                }
+                if(selectedTags.contains("Мужской")){
+                    sexTags.add("Мужской");
+                    selectedTags.remove("Мужской");
+                }
+                if(selectedTags.contains("Женский")){
+                    sexTags.add("Женский");
+                    selectedTags.remove("Женский");
+                }
+                if(!selectedTags.isEmpty()){
+                    for(Gift gift:gifts){
+                        for(String tag:selectedTags){
+                            if(gift.tags.contains(tag)){
                                 filteredGifts.add(gift);
+                                break;
                             }
+                        }
+                    }
+                }else{
+                    filteredGifts = gifts;
+                }
+                // zb
+                if(!sexTags.isEmpty()){
+                    if(!filteredGifts.isEmpty()){
+                        for(Gift gift:filteredGifts){
+                            for(String tag:sexTags){
+                                if(gift.tags.contains(tag)){
+                                    filteredListCopy.add(gift);
+                                    break;
+                                }
+                            }
+                        }
+                        filteredGifts.clear();
+                        filteredGifts = filteredListCopy;
                     }
                 }
+                if(!ageTags.isEmpty()){
+                    if(!filteredGifts.isEmpty()){
+
+                        for(Gift gift:filteredGifts){
+                            for(String tag:ageTags){
+                                if(gift.tags.contains(tag)){
+                                    filteredListCopy.add(gift);
+                                }
+                            }
+                        }
+                        filteredGifts.clear();
+                        filteredGifts = filteredListCopy;
+                    }
+                }
+//                    if(!specialTags.isEmpty()){
+//                        Log.d("shop","special tags is not empty");
+////                        for(Gift gift:filteredGifts){
+////                            for(String tag: specialTags){
+////                                if(!gift.tags.contains(tag)){
+////                                    filteredGifts.remove(gift);
+////                                    break;
+////                                }
+////                            }
+////                        }
+//                    }else{
+//                        Log.d("shop","special tags is empty");
+//                    }
+
+//                if(selectedTags.isEmpty()){
+//                    if(specialTags.isEmpty()){
+//                        for(Gift gift:gifts){
+//                            filteredGifts.add(gift);
+//                        }
+//                    }else{
+//                        for(Gift gift: gifts){
+//                            for(String specialTag: specialTags){
+//                                filteredGifts.add(gift);
+//                                break;
+//                            }
+//                        }
+//                    }
+//                }else{
+//
+//                }
+                //for(Gift gift :gifts){
+
+//                    for(String tag:selectedTags){
+//                        if(gift.tags.contains(tag)){
+//                            Log.d("shop", String.valueOf(selectedTags.size()));
+//                            if(!specialTags.isEmpty()){
+//                                for(String specialTag:specialTags){
+//                                    if(gift.tags.contains(specialTag)){
+//                                        filteredGifts.add(gift);
+//                                        break;
+//                                    }
+//                                }
+//                            }else{
+//                                filteredGifts.add(gift);
+//                                break;
+//                            }
+//                        }
+//                            if(tag.equals("0 - 18")){
+//                                if(gift.tags.contains("0 - 18")){
+//                                    filteredGifts.add(gift);
+//                                }
+//                                //break;
+//                            }else if(tag.equals("19 - 35")){
+//                                if(gift.tags.contains("19 - 35")){
+//                                    filteredGifts.add(gift);
+//                                }
+//                                //break;
+//                            }else if(tag.equals("36 - 60")){
+//                                if(gift.tags.contains("36 - 60")){
+//                                    filteredGifts.add(gift);
+//                                }
+//                                //break;
+//                            }else if(tag.equals("60+")){
+//                                if(gift.tags.contains("60+")){
+//                                    filteredGifts.add(gift);
+//                                }
+//                                //break;
+//                            }else if(tag.equals("Мужской")){
+//                                if(gift.tags.contains("Мужской")){
+//                                    filteredGifts.add(gift);
+//                                }
+//                                //break;
+//                            }else if(tag.equals("Женский")){
+//                                if(gift.tags.contains("Женский")){
+//                                    filteredGifts.add(gift);
+//                                }
+//                                //break;
+//                            }else if(gift.tags.contains(tag)) {
+//                                filteredGifts.add(gift);
+//                            }
+                    //}
+                //}
                 giftAdapter.setGifts(filteredGifts);
+                Collections.sort(filteredGifts, (obj1, obj2) -> Double.compare(obj2.countLikes, obj1.countLikes));
             }
             Collections.sort(gifts, (obj1, obj2) -> Double.compare(obj2.countLikes, obj1.countLikes));
             giftAdapter.notifyDataSetChanged();
