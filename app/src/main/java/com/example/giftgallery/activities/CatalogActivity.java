@@ -76,6 +76,11 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
 
     private void setListeners() {
         binding.imageSignOut.setOnClickListener(v -> signOut());
+        binding.imageFilter.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
     }
 
     private void loadUserDetails() {
@@ -312,7 +317,6 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
             }
             Collections.sort(gifts, (obj1, obj2) -> Double.compare(obj2.countLikes, obj1.countLikes));
             giftAdapter.notifyDataSetChanged();
-            binding.productsRecyclerView.smoothScrollToPosition(0);
             binding.productsRecyclerView.setVisibility(View.VISIBLE);
             binding.progressBar.setVisibility(View.GONE);
         }
