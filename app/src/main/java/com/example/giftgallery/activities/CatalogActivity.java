@@ -75,6 +75,11 @@ public class CatalogActivity extends AppCompatActivity implements LikeListener {
 
     private void setListeners() {
         binding.imageSignOut.setOnClickListener(v -> signOut());
+        binding.imageFilter.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
     }
 
     private void loadUserDetails() {
